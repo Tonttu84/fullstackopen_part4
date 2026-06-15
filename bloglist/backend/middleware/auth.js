@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
-const congif = require('../utils/config')
+const config = require('../utils/config')
+const logger = require('../utils/logger')
 
 const tokenExtractor = (request, response, next) => {
   const authorization = request.get('authorization')
@@ -24,7 +25,7 @@ try {
     return response.status(401).json({ error: 'token missing' })
     }
 
-    const decodedToken = jwt.verify(request.token, congif.SECRET)
+    const decodedToken = jwt.verify(request.token, config.SECRET)
 
     if (!decodedToken.id) {
         logger.warn({

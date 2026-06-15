@@ -17,7 +17,7 @@ const initialBlogs = 5;
 
 beforeAll(async () => {
   await db.connect()
-})
+}, 30000)
 
 beforeEach(async () => {
   await db.clearDatabase()
@@ -56,6 +56,17 @@ describe('total likes', () => {
 
 })
 
+
+describe('favorite blog', () => {
+  test('returns the blog with the most likes', () => {
+    const result = listHelper.favoriteBlog(blogs)
+    expect(result).toMatchObject({
+      title: 'Canonical string reduction',
+      author: 'Edsger W. Dijkstra',
+      likes: 12
+    })
+  })
+})
 
 test('I can find the author with most blogs', () => {
 
@@ -351,7 +362,7 @@ test("Modifying old blogs requires that you own them", async () => {
 })
 
 
-test("Modifying old blogs requires that you own them", async () => {
+test("Modifying a non-existent blog returns 404", async () => {
 
   const users = await User.find({})
   const user = users[0]

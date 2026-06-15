@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const congif = require('../../utils/config')
+const config = require('../../utils/config')
 
 
 
@@ -9,7 +9,7 @@ const createToken = (user) => {
     id: user._id
   }
 
-  return jwt.sign(userForToken, congif.SECRET, {
+  return jwt.sign(userForToken, config.SECRET, {
     expiresIn: '1h'
   })
 }
@@ -85,4 +85,13 @@ const mostBlogs = (blogs) => {
 
 
 
-module.exports = { createToken, dummy, totalLikes, mostLikes, mostBlogs }
+const favoriteBlog = (blogs) => {
+  if (blogs.length === 0) return null
+
+  let favorite = blogs[0]
+  return blogs.reduce((fav, blog) =>
+    blog.likes > fav.likes ? blog : fav
+  , favorite)
+}
+
+module.exports = { createToken, dummy, totalLikes, mostLikes, mostBlogs, favoriteBlog }
